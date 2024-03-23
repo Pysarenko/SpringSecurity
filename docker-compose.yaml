@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'cruddemo4section_project'
+    ports:
+      - 5431:5432
+    environment:
+      - 'POSTGRES_USER=cath515'
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+      - 'POSTGRES_DB=java'
