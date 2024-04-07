@@ -1,24 +1,53 @@
 package com.cath.springboot.cruddemo4section.Service;
 
 import com.cath.springboot.cruddemo4section.dao.EmployeeDAO;
+import com.cath.springboot.cruddemo4section.dao.EmployeeRepository;
 import com.cath.springboot.cruddemo4section.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private EmployeeDAO employeeDAO;
+    private EmployeeRepository employeeRepository;
+
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeDAO theemployeeDAO) {
-        employeeDAO = theemployeeDAO;
-
+    public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository) {
+        employeeRepository = theEmployeeRepository;
     }
     @Override
     public List<Employee> findAll() {
-        return employeeDAO.findAll();
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Employee findById(int theId) {
+        Optional<Employee> result = employeeRepository.findById(theId);
+
+        Employee theEmployee = null;
+
+        if (result.isPresent()) {
+            theEmployee = result.get();
+        }
+        else {
+            // we didn't find the employee
+            throw new RuntimeException("Did not find employee id - " + theId);
+        }
+
+        return theEmployee;
+    }
+
+    @Override
+    public Employee save(Employee theEmployee) {
+        return employeeRepository.save(theEmployee);
+    }
+
+    @Override
+    public void deleteById(int theId) {
+        employeeRepository.deleteById(theId);
     }
 }
